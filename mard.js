@@ -6,7 +6,7 @@
   <script src="http://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.js">
     
   </script>
-  
+  <link rel="stylesheet" href="https://typo.sofi.sh/typo.css">
 </head>
 <body>
   <div id="content"></div>
