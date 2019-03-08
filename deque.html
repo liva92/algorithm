@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    //双队列类
+  class Queue {
+    constructor() {
+      this.count = 0;
+      this.lowestCount = 0;
+      this.items = {};
+  }
+
+    enqueue(element) {
+      this.items[this.count] = element;
+      this.count++;
+    }
+
+    dequeue() {
+      if (this.isEmpty()) {
+        return undefined;
+      }
+      const result = this.items[this.lowestCount];
+      delete this.items[this.lowestCount];
+      this.lowestCount++;
+      return result;
+    }
+
+    peek() {
+      if (this.isEmpty()) {
+        return undefined;
+      }
+      return this.items[this.lowestCount];
+    }
+
+    isEmpty() {
+      return this.size() === 0;
+    }
+
+    clear() {
+      this.items = {};
+      this.count = 0;
+      this.lowestCount = 0;
+    }
+
+    size() {
+      return this.count - this.lowestCount;
+    }
+
+    toString() {
+      if (this.isEmpty()) {
+        return '';
+      }
+      let objString = `${this.items[this.lowestCount]}`;
+      for (let i = this.lowestCount + 1; i < this.count; i++) {
+        objString = `${objString},${this.items[i]}`;
+      }
+      return objString;
+    }
+  }
+//每次计数到num,就从前面删除一个元素
+  function hotPotato(elementsList, num) {
+    const queue = new Queue(); // {1}
+    const elimitatedList = [];
+
+    for (let i = 0; i < elementsList.length; i++) {
+      queue.enqueue(elementsList[i]); // {2}
+    }
+
+    while (queue.size() > 1) {
+      for (let i = 0; i < num; i++) {
+        queue.enqueue(queue.dequeue()); // {3}
+      }
+      elimitatedList.push(queue.dequeue()); // {4}
+    }
+
+    return {
+      eliminated: elimitatedList,
+      winner: queue.dequeue() // {5}
+    };
+  }
+
+  const names = ['John', 'Jack', 'Camila', 'Ingrid', 'Carl'];
+  const result = hotPotato(names, 7);
+
+  result.eliminated.forEach(name => {
+    console.log(`${name} was eliminated from the Hot Potato game.`);
+  });
+
+  console.log(`The winner is: ${result.winner}`);
+</script>
+</body>
+</html>
